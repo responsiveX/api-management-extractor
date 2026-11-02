@@ -5,7 +5,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <ProjectGuid>{B5183465-2BC1-4206-9C9F-5AC9615AC941}</ProjectGuid>
         <LangVersion>latest</LangVersion>
-        <Version>1.5.0</Version>
+        <Version>1.5.1</Version>
         <RootNamespace>$(SolutionName).$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
