@@ -1,0 +1,40 @@
+<!--
+  Repository-root shared MSBuild properties — reference configuration.
+  Companion to the dotnet-solution-structure skill.
+
+  Everything shared lives here so each .csproj stays near-empty. A project sets
+  only TargetFramework, its SDK attribute, and genuinely project-specific
+  properties. Redeclaring anything below in a .csproj is noise that silently
+  diverges when this file changes.
+-->
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+  </PropertyGroup>
+
+  <!--
+    Set once for the whole solution rather than per project. Kept separate so
+    the intent is visible: every project targets the same framework.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <!--
+    Packaging metadata for projects published to a feed. Projects opt in with
+    <IsPackable>true</IsPackable>; everything else inherits false.
+  -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <Authors></Authors>
+    <Company></Company>
+    <RepositoryUrl></RepositoryUrl>
+    <PackageLicenseExpression></PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>

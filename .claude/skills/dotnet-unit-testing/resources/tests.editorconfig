@@ -1,0 +1,35 @@
+# ===========================================================================
+# Test-project analyzer overrides — reference configuration
+#
+# Companion to the dotnet-unit-testing skill. Copy into `test/` as
+# `.editorconfig`. Scoped to the test tree ONLY: CA1707 still catches
+# underscores in production identifiers everywhere else.
+# ===========================================================================
+
+[*.cs]
+
+# Test methods are named
+# MethodOrPropertyName_StateOrConditionUnderTest_ExpectedOutcome, so CA1707
+# fires on every one of them. It is off in the default analysis mode and turns
+# on under <AnalysisLevel>latest-recommended</AnalysisLevel> or
+# <AnalysisMode>All</AnalysisMode>.
+dotnet_diagnostic.CA1707.severity = none
+
+# ---------------------------------------------------------------------------
+# Initialization and cleanup style. MSTest accepts a constructor or
+# [TestInitialize], and Dispose or [TestCleanup]. Each pair below is mutually
+# exclusive: enable exactly ONE of each and leave the other at `none`.
+# Enabling both sides makes every test class violate one of them.
+#
+# Amusement Connect house style: [TestInitialize] / [TestCleanup], which can
+# be async — Testcontainers and other async setup require that.
+# ---------------------------------------------------------------------------
+dotnet_diagnostic.MSTEST0019.severity = warning       # prefer TestInitialize
+dotnet_diagnostic.MSTEST0020.severity = none          # prefer constructors
+dotnet_diagnostic.MSTEST0021.severity = none          # prefer Dispose
+dotnet_diagnostic.MSTEST0022.severity = warning       # prefer TestCleanup
+
+# Flag [Ignore] without a justification, and ignored tests generally. Both are
+# opt-in: a skipped test that nobody can date is how a suite quietly shrinks.
+dotnet_diagnostic.MSTEST0015.severity = suggestion    # test should not be ignored
+dotnet_diagnostic.MSTEST0066.severity = warning       # [Ignore] needs a justification

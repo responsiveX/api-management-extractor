@@ -1,0 +1,45 @@
+<!--
+  Central package management — reference configuration.
+  Companion to the dotnet-solution-structure skill.
+
+  Versions live here; each .csproj carries a bare
+  <PackageReference Include="..." /> with no Version attribute. A bump becomes
+  a one-line solution-wide change and divergence becomes impossible.
+
+  Keep framework package families (Microsoft.Extensions.*) on one version
+  matching the target framework.
+-->
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Microsoft.Extensions">
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="" />
+  </ItemGroup>
+
+  <ItemGroup Label="Data">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="" />
+  </ItemGroup>
+
+  <!--
+    Test projects use `MSTest.Sdk` as their project SDK, which supplies the test
+    framework, the runner and the analyzers on aligned versions. Those are NOT
+    PackageReferences, so they get no entry here.
+
+    Deliberately absent: Microsoft.NET.Test.Sdk (the VSTest host — these projects
+    run on Microsoft.Testing.Platform, which embeds its runner in the test
+    assembly), and any xunit / NUnit package.
+  -->
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,159 @@
+# ===========================================================================
+# .NET naming and style enforcement — reference configuration
+#
+# Companion to the dotnet-naming-conventions skill. Copy into the repository
+# root as `.editorconfig`, or merge these sections into an existing one.
+#
+# ORDERING MATTERS. Naming rules are evaluated top to bottom and the FIRST
+# matching rule wins. Every rule below is ordered most-specific first.
+# Inserting a general rule above a specific one silently disables the specific
+# one — nothing warns you, and the config still looks correct.
+# ===========================================================================
+
+root = true
+
+[*.{cs,csx}]
+
+# ---------------------------------------------------------------------------
+# Style: field prefixes instead of `this.`
+# ---------------------------------------------------------------------------
+dotnet_style_qualification_for_field    = false:warning
+dotnet_style_qualification_for_property = false:warning
+dotnet_style_qualification_for_method   = false:warning
+dotnet_style_qualification_for_event    = false:warning
+
+# IDE0003 is what the four settings above surface as. Without a severity the
+# preference is expressed and never enforced.
+dotnet_diagnostic.IDE0003.severity = warning
+
+# IDE1006 is what every dotnet_naming_rule below surfaces as. If it is set to
+# `none` anywhere up the .editorconfig chain, all naming rules go quiet while
+# still appearing to be configured.
+dotnet_diagnostic.IDE1006.severity = warning
+
+# ===========================================================================
+# Naming styles
+# ===========================================================================
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.camel_case.capitalization = camel_case
+
+dotnet_naming_style.underscore_camel_case.capitalization  = camel_case
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+
+dotnet_naming_style.i_pascal_case.capitalization  = pascal_case
+dotnet_naming_style.i_pascal_case.required_prefix = I
+
+dotnet_naming_style.t_pascal_case.capitalization  = pascal_case
+dotnet_naming_style.t_pascal_case.required_prefix = T
+
+# ===========================================================================
+# Naming rules — MOST SPECIFIC FIRST. Do not reorder.
+# ===========================================================================
+
+# --- 1. Constants: PascalCase at every accessibility -----------------------
+# MUST precede the private-field rule, which would otherwise claim private
+# consts and demand `_`.
+dotnet_naming_symbols.constants.applicable_kinds           = field
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+dotnet_naming_symbols.constants.required_modifiers         = const
+
+dotnet_naming_rule.constants_are_pascal_case.symbols  = constants
+dotnet_naming_rule.constants_are_pascal_case.style    = pascal_case
+dotnet_naming_rule.constants_are_pascal_case.severity = warning
+
+# --- 2. static readonly fields: PascalCase at every accessibility ----------
+# Amusement Connect treats `static readonly` like a constant — no prefix.
+# MUST precede the private-field rule, which would otherwise claim private
+# static readonly fields and demand `_`.
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds           = field
+dotnet_naming_symbols.static_readonly_fields.applicable_accessibilities = *
+dotnet_naming_symbols.static_readonly_fields.required_modifiers         = static, readonly
+
+dotnet_naming_rule.static_readonly_fields_are_pascal_case.symbols  = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields_are_pascal_case.style    = pascal_case
+dotnet_naming_rule.static_readonly_fields_are_pascal_case.severity = warning
+
+# --- 3. Private/internal fields: _camelCase --------------------------------
+# Instance fields, and the rare mutable static field.
+dotnet_naming_symbols.private_fields.applicable_kinds           = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private, internal, private_protected
+
+dotnet_naming_rule.private_fields_are_underscore.symbols  = private_fields
+dotnet_naming_rule.private_fields_are_underscore.style    = underscore_camel_case
+dotnet_naming_rule.private_fields_are_underscore.severity = warning
+
+# --- 4. Public/protected fields: PascalCase --------------------------------
+dotnet_naming_symbols.public_fields.applicable_kinds           = field
+dotnet_naming_symbols.public_fields.applicable_accessibilities = public, protected, protected_internal
+
+dotnet_naming_rule.public_fields_are_pascal_case.symbols  = public_fields
+dotnet_naming_rule.public_fields_are_pascal_case.style    = pascal_case
+dotnet_naming_rule.public_fields_are_pascal_case.severity = warning
+
+# --- 5. Interfaces: I + PascalCase -----------------------------------------
+# MUST precede the general type rule.
+dotnet_naming_symbols.interfaces.applicable_kinds           = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+dotnet_naming_rule.interfaces_are_i_pascal_case.symbols  = interfaces
+dotnet_naming_rule.interfaces_are_i_pascal_case.style    = i_pascal_case
+dotnet_naming_rule.interfaces_are_i_pascal_case.severity = warning
+
+# --- 6. Generic type parameters: T + PascalCase ----------------------------
+dotnet_naming_symbols.type_parameters.applicable_kinds           = type_parameter
+dotnet_naming_symbols.type_parameters.applicable_accessibilities = *
+
+dotnet_naming_rule.type_parameters_are_t_pascal_case.symbols  = type_parameters
+dotnet_naming_rule.type_parameters_are_t_pascal_case.style    = t_pascal_case
+dotnet_naming_rule.type_parameters_are_t_pascal_case.severity = warning
+
+# --- 7. All other types: PascalCase ----------------------------------------
+dotnet_naming_symbols.types.applicable_kinds           = class, struct, enum, delegate
+dotnet_naming_symbols.types.applicable_accessibilities = *
+
+dotnet_naming_rule.types_are_pascal_case.symbols  = types
+dotnet_naming_rule.types_are_pascal_case.style    = pascal_case
+dotnet_naming_rule.types_are_pascal_case.severity = warning
+
+# --- 8. Non-field members: PascalCase --------------------------------------
+dotnet_naming_symbols.non_field_members.applicable_kinds           = property, method, event
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = *
+
+dotnet_naming_rule.non_field_members_are_pascal_case.symbols  = non_field_members
+dotnet_naming_rule.non_field_members_are_pascal_case.style    = pascal_case
+dotnet_naming_rule.non_field_members_are_pascal_case.severity = warning
+
+# --- 9. Parameters and locals: camelCase -----------------------------------
+dotnet_naming_symbols.parameters_and_locals.applicable_kinds           = parameter, local
+dotnet_naming_symbols.parameters_and_locals.applicable_accessibilities = *
+
+dotnet_naming_rule.parameters_and_locals_are_camel_case.symbols  = parameters_and_locals
+dotnet_naming_rule.parameters_and_locals_are_camel_case.style    = camel_case
+dotnet_naming_rule.parameters_and_locals_are_camel_case.severity = warning
+
+# ===========================================================================
+# Analyzer rules that need a decision rather than a default
+# ===========================================================================
+
+# StyleCop.Analyzers defaults that contradict the _camelCase field style.
+# SA1311 (static readonly must begin upper-case) agrees with the PascalCase
+# static readonly rule above, so it is left at its default.
+dotnet_diagnostic.SA1101.severity = none   # prefix local calls with this
+dotnet_diagnostic.SA1309.severity = none   # field must not begin with underscore
+
+# TAP's "suffix every Task-returning method with Async" contradicts the
+# convention of suffixing only when a sync counterpart exists.
+dotnet_diagnostic.VSTHRD200.severity = none   # Microsoft.VisualStudio.Threading
+dotnet_diagnostic.RCS1046.severity   = none   # Roslynator
+
+# Keep this one: a NON-async method ending in Async is still a real mistake.
+dotnet_diagnostic.RCS1047.severity = warning
+
+# CA1707 (identifiers should not contain underscores) fires on every test
+# method named MethodOrPropertyName_StateOrConditionUnderTest_ExpectedOutcome.
+# It is off in the default analysis mode and on under
+# <AnalysisMode>All</AnalysisMode> or Recommended. Disable it in
+# test/.editorconfig ONLY — see
+# tests.editorconfig in this directory — never here, where it still catches
+# underscores in production identifiers.

@@ -1,0 +1,37 @@
+<!--
+  Reference MSTest test project — Microsoft.Testing.Platform (MTP).
+
+  Companion to the dotnet-unit-testing skill. Copy as
+  test/AmusementConnect.<Service>.Testing.Unit.MsTest/AmusementConnect.<Service>.Testing.Unit.MsTest.csproj
+  (or .Testing.Integration.MsTest) and pin the current MSTest.Sdk version.
+  MSTest.Sdk sets EnableMSTestRunner and TestingPlatformDotnetTestSupport for
+  you, so neither belongs here.
+
+  Do NOT add Microsoft.NET.Test.Sdk: that is the VSTest host, and MTP does not
+  use it.
+-->
+<Project Sdk="MSTest.Sdk/4.1.0">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+
+    <!-- Escalates the info-level MSTEST rules to warnings and MSTEST0003 to an
+         error. `All` is stricter; `Default` leaves real problems at info. -->
+    <MSTestAnalysisMode>Recommended</MSTestAnalysisMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/AmusementConnect.WidgetService/AmusementConnect.WidgetService.csproj" />
+  </ItemGroup>
+
+  <!-- House stack: Moq for test doubles, Shouldly for assertions. Versions
+       come from Directory.Packages.props. -->
+  <ItemGroup>
+    <PackageReference Include="Moq" />
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+</Project>
